@@ -1,0 +1,9 @@
+            .ORG    $8000
+START:
+            LDA     #$02
+            STA     $200
+            LDA     #$03
+            LDA     $200
+            STA     $201
+            JMP     START
+
