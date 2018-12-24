@@ -1,49 +1,82 @@
-#include <stdlib.h>
-#include "mos6502emu.h"
+#include <stdio.h>
+#include "mos6502_controller.h"
 
-#define MEMORY_SIZE 0x20000
+uint8_t image[TEXT_SIZE];
+uint8_t stack[RAM_SEGMENT - STACK_SEGMENT];
+uint8_t ram[BLANK1_SEGMENT - RAM_SEGMENT];
 
-// emulator memory
-uint8_t* memory = NULL;
+uint8_t text_read_handler(uint16_t address) {
+    printf("read text with address: 0x%x\n", address);
 
-// Implemnets input for emulator
-uint8_t read6502(uint16_t address) {
-    printf("CPU wants to read on %x\n", address);
-
-    return memory[address];
+    return image[address];
 }
 
-// Implemnets output for emulator
-void write6502(uint16_t address, uint8_t value) {
-    printf("CPU wants to write on %x with value: %x\n", address, value);
+void text_write_handler(uint16_t address, uint8_t value) {
+    printf("write on text with address: 0x%x and value: 0x%x\n", address, value);
 
-    memory[address] = value;
+    exit(1);
 }
 
-// Load bin image into memory
-void load_image(char* filepath) {
+uint8_t blank1_read_handler(uint16_t address) {
+    printf("read blank1 with address: 0x%x\n", address);
+
+    exit(1);
+}
+
+void blank1_write_handler(uint16_t address, uint8_t value) {
+    printf("write on blank1 with address: 0x%x and value: 0x%x\n", address, value);
+
+    exit(1);
+}
+
+uint8_t ram_read_handler(uint16_t address) {
+    printf("read ram with address: 0x%x\n", address);
+
+    return ram[address];
+}
+
+void ram_write_handler(uint16_t address, uint8_t value) {
+    printf("write on ram with address: 0x%x and value: 0x%x\n", address, value);
+
+    ram[address] = value;
+}
+
+uint8_t stack_read_handler(uint16_t address) {
+    printf("read stack with address: 0x%x\n", address);
+
+    return stack[address];
+}
+
+void stack_write_handler(uint16_t address, uint8_t value) {
+    printf("write on stack with address: 0x%x and value: 0x%x\n", address, value);
+
+    stack[address] = value;
+}
+
+uint8_t reserved_read_handler(uint16_t address) {
+    printf("read reserved with address: 0x%x\n", address);
+
+    exit(1);
+}
+
+void reserved_write_handler(uint16_t address, uint8_t value) {
+    printf("write on reserved with address: 0x%x and value: 0x%x\n", address, value);
+
+    exit(1);
+}
+
+void load_code(char* filepath) {
     FILE* fileptr = fopen(filepath, "rb");
-
-    // handle invalid file
     if(fileptr == NULL) {
-        fprintf(stderr, "Fail to open file: %s\n", filepath);
+        fprintf(stderr, "Fail to load code\n");
 
         exit(1);
     }
 
-    size_t n = fread(memory, sizeof(uint8_t), MEMORY_SIZE, fileptr);
+    size_t n = fread(image, sizeof(uint8_t), 0x2000, fileptr);
+    printf("0x%lx bytes has been loaded\n", n);
 
-    printf("%lu bytes has been read into memory\n", n);
-}
-
-void start_up(char* filepath) {
-    // alloc memory
-    memory = malloc(MEMORY_SIZE * sizeof(uint8_t));
-
-    // load image into memory
-    load_image(filepath);
-    // reset 6502
-    reset6502();
+    fclose(fileptr);
 }
 
 int main(int argc, char* argv[]) {
@@ -52,12 +85,8 @@ int main(int argc, char* argv[]) {
 
         exit(1);
     }
-    char* image_path = argv[1];
+    char* filepath = argv[1];
+    load_code(filepath);
 
-    start_up(image_path);
-
-    // run loaded image
-    while(1) {
-        step6502();
-    }
+    start_up();
 }

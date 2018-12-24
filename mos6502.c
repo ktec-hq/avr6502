@@ -102,7 +102,7 @@
  *                                                   *
  *****************************************************/
 
-#include "mos6502emu.h"
+#include "mos6502.h"
 
 //6502 defines
 // #define UNDOCUMENTED //when this is defined, undocumented opcodes are handled.
@@ -201,12 +201,12 @@ void reset6502() {
     // pc = (uint16_t)read6502(0xFFFC) | ((uint16_t)read6502(0xFFFD) << 8);
 
     // program should always start at 0x3000
-    pc = 0x3000;
+    pc = 0x8000;
     a = 0;
     x = 0;
     y = 0;
     // TODO: change sp?
-    sp = 0xFD;
+    sp = 0xFF;
     status |= FLAG_CONSTANT;
 }
 
@@ -306,11 +306,9 @@ static uint16_t getvalue() {
         else return((uint16_t)read6502(ea));
 }
 
-/*
 static uint16_t getvalue16() {
     return((uint16_t)read6502(ea) | ((uint16_t)read6502(ea+1) << 8));
 }
-*/
 
 static void putvalue(uint16_t saveval) {
     if (addrtable[opcode] == acc) a = (uint8_t)(saveval & 0x00FF);

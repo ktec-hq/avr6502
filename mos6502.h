@@ -1,5 +1,5 @@
-#ifndef MOS6502_EMU_H
-#define MOS6502_EMU_H
+#ifndef MOS6502_H
+#define MOS6502_H
 
 #include <stdio.h>
 #include <stdint.h>
