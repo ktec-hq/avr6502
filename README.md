@@ -17,6 +17,12 @@ Program should start at 0x8000, and its size shouldn't exceed 0x2000 bytes.
 | STACK    | 0x100         | 0x100  |
 | RESERVED | 0x0           | 0x100  |
 
+### LED Segment
+
+each LED has 8 bytes: STATUS R G B HL HI V
+
+Note: Each hue has two bytes with lower 8 bits first.
+
 ## Resources
 
 6502 cpu implementation: [fake6502](http://rubbermallet.org/fake6502.c)
