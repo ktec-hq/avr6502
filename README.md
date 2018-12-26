@@ -10,7 +10,9 @@ Program should start at 0x8000, and its size shouldn't exceed 0x2000 bytes.
 | Segment  | Start Address | Size   |
 | -------- | ------------- | ------ |
 | TEXT     | 0x8000        | 0x2000 |
-| BLANK1   | 0x800         | 0x7800 |
+| KEY      | 0x4000        | 0x4000 |
+| LED      | 0x2000        | 0x2000 |
+| BLANK1   | 0x800         | 0x1800 |
 | RAM      | 0x200         | 0x600  |
 | STACK    | 0x100         | 0x100  |
 | RESERVED | 0x0           | 0x100  |

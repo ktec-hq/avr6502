@@ -2,8 +2,10 @@
 #include "mos6502_controller.h"
 
 uint8_t image[TEXT_SIZE];
-uint8_t stack[RAM_SEGMENT - STACK_SEGMENT];
+uint8_t key[TEXT_SEGMENT - KEY_SEGMENT];
+uint8_t led[KEY_SEGMENT - LED_SEGMENT];
 uint8_t ram[BLANK1_SEGMENT - RAM_SEGMENT];
+uint8_t stack[RAM_SEGMENT - STACK_SEGMENT];
 
 uint8_t text_read_handler(uint16_t address) {
     printf("read text with address: 0x%x\n", address);
@@ -15,6 +17,34 @@ void text_write_handler(uint16_t address, uint8_t value) {
     printf("write on text with address: 0x%x and value: 0x%x\n", address, value);
 
     exit(1);
+}
+
+uint8_t key_read_handler(uint16_t address) {
+    // TODO: We shouldn't have an actual KEY matrix, this is only for testing
+    printf("read led with address: 0x%x\n", address);
+
+    return key[address];
+}
+
+void key_write_handler(uint16_t address, uint8_t value) {
+    // TODO: We shouldn't have an actual KEY matrix, this is only for testing
+    printf("write on led with address: 0x%x and value: 0x%x\n", address, value);
+
+    key[address] = value;
+}
+
+uint8_t led_read_handler(uint16_t address) {
+    // TODO: We shouldn't have an actual LED matrix, this is only for testing
+    printf("read led with address: 0x%x\n", address);
+
+    return led[address];
+}
+
+void led_write_handler(uint16_t address, uint8_t value) {
+    // TODO: We shouldn't have an actual LED matrix, this is only for testing
+    printf("write on led with address: 0x%x and value: 0x%x\n", address, value);
+
+    led[address] = value;
 }
 
 uint8_t blank1_read_handler(uint16_t address) {
