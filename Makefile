@@ -20,6 +20,8 @@ PRJ = avr6502
 MCU = atmega32u4
 # mcu clock frequency
 CLK = 16000000
+F_CPU = 16000000
+
 # avr programmer (and port if necessary)
 # e.g. PRG = usbtiny -or- PRG = arduino -P /dev/tty.usbmodem411
 PRG = usbtiny
@@ -56,6 +58,14 @@ EXTC     := $(foreach dir, $(EXT), $(wildcard $(dir)/*.c))
 CPPFILES  = $(filter %.cpp, $(SRC))
 EXTCPP   := $(foreach dir, $(EXT), $(wildcard $(dir)/*.cpp))
 OBJ       = $(CFILES:.c=.o) $(EXTC:.c=.o) $(CPPFILES:.cpp=.o) $(EXTCPP:.cpp=.o)
+
+# Boot Section Size in *bytes*
+#   Teensy halfKay   512
+#   Teensy++ halfKay 1024
+#   Atmel DFU loader 4096
+#   LUFA bootloader  4096
+#   USBaspLoader     2048
+CFLAGS += -DBOOTLOADER_SIZE=4096
 
 # user targets
 # compile all files

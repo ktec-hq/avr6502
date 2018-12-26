@@ -1,4 +1,5 @@
 #include "mos6502_controller.h"
+#include <avr/io.h>
 
 // Implements input for emulator
 uint8_t read6502(uint16_t address) {
@@ -9,16 +10,15 @@ uint8_t read6502(uint16_t address) {
     } else if(address >= LED_SEGMENT) {
         return led_read_handler(address - LED_SEGMENT);
     } else if(address >= BLANK1_SEGMENT) {
-        return blank1_read_handler(address);
+        return blank1_read_handler(address - BLANK1_SEGMENT);
     } else if(address >= RAM_SEGMENT) {
         return ram_read_handler(address - RAM_SEGMENT);
     } else if(address >= STACK_SEGMENT) {
         return stack_read_handler(address - STACK_SEGMENT);
     } else if(address >= RESERVED_SEGMENT) {
-        return reserved_read_handler(address - STACK_SEGMENT);
+        return reserved_read_handler(address - RESERVED_SEGMENT);
     }
 
-    fprintf(stderr, "Invalid read on address: 0x%x\n", address);
     exit(1);
 }
 
@@ -40,7 +40,6 @@ void write6502(uint16_t address, uint8_t value) {
         return reserved_write_handler(address - RESERVED_SEGMENT, value);
     }
 
-    fprintf(stderr, "Invalid write on address: 0x%x with value: 0x%x\n", address, value);
     exit(1);
 }
 
