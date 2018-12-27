@@ -6,14 +6,10 @@
 # Makefile
 #
 # targets:
-#   all:    compiles the source code
-#   test:   tests the isp connection to the mcu
-#   flash:  writes compiled hex file to the mcu's flash memory
-#   fuse:   writes the fuse bytes to the MCU
-#   disasm: disassembles the code for debugging
 #   clean:  removes all .hex, .elf, and .o files in the source code and library directories
 
 # parameters (change this stuff accordingly)
+PRJ_BASE = .
 # project name
 PRJ = avr6502
 # avr mcu
@@ -22,16 +18,11 @@ MCU = atmega32u4
 CLK = 16000000
 F_CPU = 16000000
 
-# avr programmer (and port if necessary)
-# e.g. PRG = usbtiny -or- PRG = arduino -P /dev/tty.usbmodem411
-PRG = usbtiny
 # program source files (not including external libraries)
-SRC = main.c\
-	  mos6502.c\
-	  mos6502_controller.c
+SRC = main.c
 # where to look for external libraries (consisting of .c/.cpp files and .h files)
 # e.g. EXT = ../../EyeToSee ../../YouSART
-EXT =
+EXT = $(PRJ_BASE)/core $(PRJ_BASE)/controller
 
 
 #################################################################################################
@@ -40,6 +31,7 @@ EXT =
 
 # include path
 INCLUDE := $(foreach dir, $(EXT), -I$(dir))
+
 # c flags
 CFLAGS    = -Wall -Os -DF_CPU=$(CLK) -mmcu=$(MCU) $(INCLUDE)
 # any aditional flags for c++
@@ -71,21 +63,9 @@ CFLAGS += -DBOOTLOADER_SIZE=4096
 # compile all files
 all: $(PRJ).hex
 
-# test programmer connectivity
-test:
-	$(AVRDUDE) -v
-
 # flash program to mcu
 flash: all
 	$(AVRDUDE) -U flash:w:$(PRJ).hex:i
-
-# write fuses to mcu
-fuse:
-	$(AVRDUDE) -U lfuse:w:$(LFU):m -U hfuse:w:$(HFU):m -U efuse:w:$(EFU):m
-
-# generate disassembly files for debugging
-disasm: $(PRJ).elf
-	$(OBJDUMP) -d $(PRJ).elf
 
 # remove compiled files
 clean:
