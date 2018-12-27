@@ -5,6 +5,8 @@
 uint8_t read6502(uint16_t address) {
     if(address >= TEXT_SEGMENT) {
         return text_read_handler(address - TEXT_SEGMENT);
+    } else if(address >= HOST_FUNCTIONS_SEGMENT) {
+        return host_functions_read_handler(address - HOST_FUNCTIONS_SEGMENT);
     } else if(address >= KEY_SEGMENT) {
         return key_read_handler(address - KEY_SEGMENT);
     } else if(address >= LED_SEGMENT) {
@@ -26,6 +28,8 @@ uint8_t read6502(uint16_t address) {
 void write6502(uint16_t address, uint8_t value) {
     if(address >= TEXT_SEGMENT) {
         return text_write_handler(address - TEXT_SEGMENT, value);
+    } else if(address >= HOST_FUNCTIONS_SEGMENT) {
+        return host_functions_write_handler(address - HOST_FUNCTIONS_SEGMENT, value);
     } else if(address >= KEY_SEGMENT) {
         return key_write_handler(address - KEY_SEGMENT, value);
     } else if(address >= LED_SEGMENT) {

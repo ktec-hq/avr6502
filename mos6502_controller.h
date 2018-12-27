@@ -7,6 +7,7 @@
 #define BLANK1_SEGMENT          0x800
 #define LED_SEGMENT             0x2000
 #define KEY_SEGMENT             0x4000
+#define HOST_FUNCTIONS_SEGMENT  0x5000
 #define TEXT_SEGMENT            0x8000
 
 #define TEXT_SIZE               0x2000
@@ -32,6 +33,9 @@ extern void    led_write_handler(uint16_t address, uint8_t value);
 
 extern uint8_t key_read_handler(uint16_t address);
 extern void    key_write_handler(uint16_t address, uint8_t value);
+
+extern uint8_t host_functions_read_handler(uint16_t address);
+extern void    host_functions_write_handler(uint16_t address, uint8_t value);
 
 extern uint8_t text_read_handler(uint16_t address);
 extern void    text_write_handler(uint16_t address, uint8_t value);
