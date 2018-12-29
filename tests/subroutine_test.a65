@@ -1,9 +1,0 @@
-            .ORG    $8000
-START:
-            JSR     TESTROUTINE
-            JMP     START
-
-TESTROUTINE:
-            LDA     #$02
-            STA     $200
-            RTS

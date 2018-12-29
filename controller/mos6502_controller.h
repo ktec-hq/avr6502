@@ -40,6 +40,8 @@ extern void    host_functions_write_handler(uint16_t address, uint8_t value);
 extern uint8_t text_read_handler(uint16_t address);
 extern void    text_write_handler(uint16_t address, uint8_t value);
 
+uint8_t volatile is_paused;
+
 void start_up();
 
 #endif

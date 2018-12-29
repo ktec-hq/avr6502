@@ -53,6 +53,10 @@ void start_up() {
 
     // run loaded image
     while(1) {
+        if(is_paused){
+            continue;
+        }
+
         step6502();
     }
 }

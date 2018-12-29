@@ -22,7 +22,7 @@ F_CPU = 16000000
 SRC = main.c
 # where to look for external libraries (consisting of .c/.cpp files and .h files)
 # e.g. EXT = ../../EyeToSee ../../YouSART
-EXT = $(PRJ_BASE)/core $(PRJ_BASE)/controller
+EXT = $(PRJ_BASE)/core $(PRJ_BASE)/controller $(PRJ_BASE)/host_functions $(PRJ_BASE)/led
 
 
 #################################################################################################
