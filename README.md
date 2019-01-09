@@ -1,6 +1,12 @@
 # avr6502
 6502 emulator on ATmega328P
 
+## TODO
+
+1. LED Matrix Support
+
+2. I2C Support
+
 ## Note
 
 Program should start at 0x8000, and its size shouldn't exceed 0x2000 bytes.
